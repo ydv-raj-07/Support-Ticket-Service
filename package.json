@@ -1,0 +1,50 @@
+{
+  "name": "support_ticket_service",
+  "version": "1.0.0",
+  "description": "Backend service that receives customer support tickets, triages them with an AI model, validates the AI output, and helps agents meet reply deadlines.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "start": "tsx src/index.ts",
+    "seed": "tsx scripts/seed.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "dotenv -e .env.test -- vitest run"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ydv-raj-07/Support-Ticket-Service.git"
+  },
+  "keywords": [
+    "support",
+    "tickets",
+    "ai-triage",
+    "express",
+    "typescript"
+  ],
+  "author": "Raj Ranjan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ydv-raj-07/Support-Ticket-Service/issues"
+  },
+  "homepage": "https://github.com/ydv-raj-07/Support-Ticket-Service#readme",
+  "dependencies": {
+    "@prisma/adapter-pg": "^7.10.0",
+    "@prisma/client": "^7.10.0",
+    "dotenv": "^18.0.4",
+    "express": "^5.2.1",
+    "pg": "^8.23.0",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/node": "^26.6.3",
+    "@types/pg": "^8.23.1",
+    "@types/supertest": "^7.2.1",
+    "dotenv-cli": "^11.0.0",
+    "prisma": "^7.10.0",
+    "supertest": "^7.3.0",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.2"
+  }
+}

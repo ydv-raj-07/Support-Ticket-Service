@@ -1,0 +1,23 @@
+# dependencies
+node_modules
+
+# environment variables (API key yahan hoti hai, kabhi commit mat karna)
+.env
+.env.test
+
+# Prisma generated client (npx prisma generate se dobara ban jata hai)
+/src/generated
+
+# build output
+dist
+
+# AI tool folders jo prisma init ne banaye the
+.agents
+.claude
+.windsurf
+skills-lock.json
+
+# editor / OS
+.vscode
+.DS_Store
+*.log

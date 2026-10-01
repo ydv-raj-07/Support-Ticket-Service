@@ -1,0 +1,104 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Plan {
+  free
+  pro
+  enterprise
+  unknown
+}
+
+enum TicketStatus {
+  open
+  in_progress
+  resolved
+}
+
+enum Category {
+  billing
+  bug
+  account_access
+  feature_request
+  other
+}
+
+enum Priority {
+  P0
+  P1
+  P2
+  P3
+}
+
+enum TriageDecision {
+  auto_accept
+  manual_review
+}
+
+enum TriageState {
+  pending
+  done
+}
+
+model Ticket {
+  id             Int             @id @default(autoincrement())
+  externalId     String          @unique
+  customerId     String
+  customerPlan   Plan
+  subject        String
+  body           String
+  createdAt      DateTime        @db.Timestamptz
+  receivedAt     DateTime        @default(now()) @db.Timestamptz
+  status         TicketStatus    @default(open)
+  assignee       String?
+  category       Category?
+  priority       Priority?
+  summary        String?
+  triageState    TriageState     @default(pending)
+  triageDecision TriageDecision?
+  reviewReason   String?
+  duplicateOfId  Int?
+  duplicateOf    Ticket?         @relation("Dup", fields: [duplicateOfId], references: [id])
+  duplicates     Ticket[]        @relation("Dup")
+  dueAt          DateTime?       @db.Timestamptz
+  aiCalls        AiCall[]
+  events         TicketEvent[]
+
+  @@index([status, priority, category, triageDecision])
+  @@index([customerId, createdAt])
+}
+
+model AiCall {
+  id           Int      @id @default(autoincrement())
+  ticketId     Int
+  ticket       Ticket   @relation(fields: [ticketId], references: [id])
+  model        String?
+  inputTokens  Int?
+  outputTokens Int?
+  latencyMs    Int?
+  rawOutput    String?
+  error        String?
+  at           DateTime @default(now())
+}
+
+model TicketEvent {
+  id       Int      @id @default(autoincrement())
+  ticketId Int
+  ticket   Ticket   @relation(fields: [ticketId], references: [id])
+  agentId  String?
+  kind     String
+  oldValue Json?
+  newValue Json?
+  reason   String?
+  at       DateTime @default(now())
+}
